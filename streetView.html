@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GeoLearn</title>
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="css/myStyle.css" type="text/css" rel="stylesheet" />
+<script src="jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 14px;  /* Regular padding-left + 1. */
+        width: 401px;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+}
+
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+
+    <script>
+function initialize() {
+  var mapOptions = {
+    center: new google.maps.LatLng(30.8688, 76.2195),
+    zoom: 6
+  };
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+    mapOptions);
+
+  var input = /** @type {HTMLInputElement} */(
+      document.getElementById('pac-input'));
+
+  var types = document.getElementById('type-selector');
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+  autocomplete.bindTo('bounds', map);
+
+  var infowindow = new google.maps.InfoWindow();
+  var marker = new google.maps.Marker({
+    map: map,
+    anchorPoint: new google.maps.Point(0, -29)
+  });
+
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    infowindow.close();
+    marker.setVisible(false);
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      return;
+    }
+
+ var address = '';
+    if (place.address_components) {
+      address = [
+        (place.address_components[0] && place.address_components[0].short_name || ''),
+        (place.address_components[1] && place.address_components[1].short_name || ''),
+        (place.address_components[2] && place.address_components[2].short_name || '')
+      ].join(' ');
+    }
+	
+codeAddress(address);
+   
+ showAddress(address)  
+
+  });
+alert(place);
+  // Sets a listener on a radio button to change the filter type on Places
+  // Autocomplete.
+  
+}
+var map = new GMap2(document.getElementById("map_canvas"));
+var geocoder = new GClientGeocoder();
+
+function showAddress(address) {
+  geocoder.getLatLng(
+    address,
+    function(point) {
+      if (!point) {
+        alert(address + " not found");
+      } else {
+        map.setCenter(point, 13);
+        var marker = new GMarker(point);
+        map.addOverlay(marker);
+
+        // As this is user-generated content, we display it as
+        // text rather than HTML to reduce XSS vulnerabilities.
+        marker.openInfoWindow(document.createTextNode(address));
+      }
+    }
+  );
+}
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+	
+</head>
+
+<body>
+	<div class="row" id="header">
+            <h1>Street View</h1>
+            <div class="pull-right">
+            	<ul class="nav nav-pills" style="margin-top:-50px; margin-right:100px">
+                	<li><a href="index.html">Home</a></li>
+                    <li><a href="learn.php">Learn</a></li>
+                    <li><a href="test.php">Test</a></li>
+                    <li><a href="move.php">Move Around</a></li>
+                </ul>
+            </div>
+        </div>
+<input id="pac-input" class="controls" type="text"
+        placeholder="Enter a location">
+    
+    <div id="map-canvas"></div>
+	
+</body>
+</html>

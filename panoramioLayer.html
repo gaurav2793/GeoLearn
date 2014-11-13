@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GeoLearn</title>
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="css/myStyle.css" type="text/css" rel="stylesheet" />
+<script src="jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+#photo-panel {
+  background: #fff;
+  padding: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 300px;
+  max-height: 300px;
+  font-size: 14px;
+  font-family: Arial;
+  border: 1px solid #ccc;
+  box-shadow: -2px 2px 2px rgba(33, 33, 33, 0.4);
+  display: none;
+}
+    </style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=panoramio"></script>
+    <script>
+function initialize() {
+  var mapOptions = {
+    zoom: 6,
+    center: new google.maps.LatLng(30, 76)
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var panoramioLayer = new google.maps.panoramio.PanoramioLayer();
+  panoramioLayer.setMap(map);
+
+  var photoPanel = document.getElementById('photo-panel');
+  map.controls[google.maps.ControlPosition.RIGHT_TOP].push(photoPanel);
+
+  google.maps.event.addListener(panoramioLayer, 'click', function(photo) {
+    var li = document.createElement('li');
+    var link = document.createElement('a');
+    link.innerHTML = photo.featureDetails.title + ': ' +
+        photo.featureDetails.author;
+    link.setAttribute('href', photo.featureDetails.url);
+    li.appendChild(link);
+    photoPanel.appendChild(li);
+    photoPanel.style.display = 'block';
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+	
+</head>
+
+<body>
+	<div class="row" id="header">
+            <h1>Panoramio Layer</h1>
+            <div class="pull-right">
+            	<ul class="nav nav-pills" style="margin-top:-50px; margin-right:100px">
+                	<li><a href="index.html">Home</a></li>
+                    <li><a href="learn.php">Learn</a></li>
+                    <li><a href="test.php">Test</a></li>
+                    <li><a href="move.php">Move Around</a></li>
+                </ul>
+            </div>
+        </div>
+ <div id="map-canvas"></div>
+	
+</body>
+</html>

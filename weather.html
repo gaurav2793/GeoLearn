@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GeoLearn</title>
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="css/myStyle.css" type="text/css" rel="stylesheet" />
+<script src="jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=weather"></script>
+    <script>
+function initialize() {
+  var mapOptions = {
+    zoom: 6,
+    center: new google.maps.LatLng(30,75.127491)
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var weatherLayer = new google.maps.weather.WeatherLayer({
+    temperatureUnits: google.maps.weather.TemperatureUnit.FAHRENHEIT
+  });
+  weatherLayer.setMap(map);
+
+  var cloudLayer = new google.maps.weather.CloudLayer();
+  cloudLayer.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+</head>
+
+<body>
+	<div class="row" id="header">
+            <h1>Weather Check</h1>
+            <div class="pull-right">
+            	<ul class="nav nav-pills" style="margin-top:-50px; margin-right:100px">
+                	<li><a href="index.html">Home</a></li>
+                    <li><a href="learn.php">Learn</a></li>
+                    <li><a href="test.php">Test</a></li>
+                    <li><a href="move.php">Move Around</a></li>
+                </ul>
+            </div>
+        </div>
+	 <div id="map-canvas"></div>
+</body>
+</html>
